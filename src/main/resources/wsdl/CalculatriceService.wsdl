@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CalculatriceService"
+             targetNamespace="http://calc.age.com/soap"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://calc.age.com/soap"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types>
+        <xsd:schema targetNamespace="http://calc.age.com/soap"
+                    elementFormDefault="qualified">
+
+            <xsd:element name="addition">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="a" type="xsd:double"/>
+                    <xsd:element name="b" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+            <xsd:element name="additionResponse">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="resultat" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="division">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="a" type="xsd:double"/>
+                    <xsd:element name="b" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+            <xsd:element name="divisionResponse">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="resultat" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="puissance">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="base" type="xsd:double"/>
+                    <xsd:element name="exposant" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+            <xsd:element name="puissanceResponse">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="resultat" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="racine">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="x" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+            <xsd:element name="racineResponse">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="resultat" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="factorielle">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="n" type="xsd:int"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+            <xsd:element name="factorielleResponse">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="resultat" type="xsd:double"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+
+            <!-- Erreur métier (division par zéro, racine négative...) -->
+            <xsd:element name="CalculException">
+                <xsd:complexType><xsd:sequence>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence></xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="additionRequest"><part name="parameters" element="tns:addition"/></message>
+    <message name="additionResponse"><part name="parameters" element="tns:additionResponse"/></message>
+    <message name="divisionRequest"><part name="parameters" element="tns:division"/></message>
+    <message name="divisionResponse"><part name="parameters" element="tns:divisionResponse"/></message>
+    <message name="puissanceRequest"><part name="parameters" element="tns:puissance"/></message>
+    <message name="puissanceResponse"><part name="parameters" element="tns:puissanceResponse"/></message>
+    <message name="racineRequest"><part name="parameters" element="tns:racine"/></message>
+    <message name="racineResponse"><part name="parameters" element="tns:racineResponse"/></message>
+    <message name="factorielleRequest"><part name="parameters" element="tns:factorielle"/></message>
+    <message name="factorielleResponse"><part name="parameters" element="tns:factorielleResponse"/></message>
+    <message name="CalculException"><part name="fault" element="tns:CalculException"/></message>
+
+    <portType name="CalculatriceService">
+        <operation name="addition">
+            <input message="tns:additionRequest"/>
+            <output message="tns:additionResponse"/>
+        </operation>
+        <operation name="division">
+            <input message="tns:divisionRequest"/>
+            <output message="tns:divisionResponse"/>
+            <fault name="CalculException" message="tns:CalculException"/>
+        </operation>
+        <operation name="puissance">
+            <input message="tns:puissanceRequest"/>
+            <output message="tns:puissanceResponse"/>
+        </operation>
+        <operation name="racine">
+            <input message="tns:racineRequest"/>
+            <output message="tns:racineResponse"/>
+            <fault name="CalculException" message="tns:CalculException"/>
+        </operation>
+        <operation name="factorielle">
+            <input message="tns:factorielleRequest"/>
+            <output message="tns:factorielleResponse"/>
+            <fault name="CalculException" message="tns:CalculException"/>
+        </operation>
+    </portType>
+
+    <binding name="CalculatriceBinding" type="tns:CalculatriceService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="addition">
+            <soap:operation soapAction="addition"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="division">
+            <soap:operation soapAction="division"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="CalculException"><soap:fault name="CalculException" use="literal"/></fault>
+        </operation>
+        <operation name="puissance">
+            <soap:operation soapAction="puissance"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="racine">
+            <soap:operation soapAction="racine"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="CalculException"><soap:fault name="CalculException" use="literal"/></fault>
+        </operation>
+        <operation name="factorielle">
+            <soap:operation soapAction="factorielle"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="CalculException"><soap:fault name="CalculException" use="literal"/></fault>
+        </operation>
+    </binding>
+
+    <service name="CalculatriceService">
+        <port name="CalculatricePort" binding="tns:CalculatriceBinding">
+            <soap:address location="http://localhost:8081/soap/calculatrice"/>
+        </port>
+    </service>
+</definitions>
